@@ -52,6 +52,25 @@ class HabitController extends Controller
         return redirect()->route('habits.index')->with('success', 'عادت جدید با موفقیت ساخته شد!');
     }
 
+    public function edit(Habit $habit): View
+    {
+        return view('habits.edit', compact('habit'));
+    }
+
+    public function update(Request $request, Habit $habit): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:100',
+            'category' => 'required|string|max:50',
+            'color' => 'required|string|max:20',
+            'target_per_week' => 'required|integer|min:1|max:7',
+        ]);
+
+        $habit->update($validated);
+
+        return redirect()->route('habits.index')->with('success', 'عادت با موفقیت ویرایش شد!');
+    }
+
     // متد تیک زدن یا برداشتن تیک به صورت AJAX
     public function toggleDay(Request $request, Habit $habit): JsonResponse
     {

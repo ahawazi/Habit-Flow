@@ -75,7 +75,7 @@
                             </th>
                         </template>
                         <th class="p-4 text-center">پیشرفت هفتگی</th>
-                        <th class="p-4 text-center">حذف</th>
+                        <th class="p-4 text-center">مدیریت</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-800/60">
@@ -120,15 +120,19 @@
                                 </div>
                             </td>
 
-                            <!-- حذف عادت -->
+                            <!-- مدیریت عادت -->
                             <td class="p-4 text-center">
-                                <form :action="`/habits/${habit.id}`" method="POST"
-                                    onsubmit="return confirm('حذف شود؟')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="text-rose-400 hover:text-rose-300 text-sm">حذف</button>
-                                </form>
+                                <div class="flex items-center justify-center gap-3">
+                                    <a :href="`/habits/${habit.id}/edit`"
+                                        class="text-cyan-400 hover:text-cyan-300 text-sm">ویرایش</a>
+                                    <form :action="`/habits/${habit.id}`" method="POST"
+                                        onsubmit="return confirm('حذف شود؟')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="text-rose-400 hover:text-rose-300 text-sm">حذف</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     </template>
