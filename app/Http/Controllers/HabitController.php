@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Habit;
 use App\Models\HabitLog;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class HabitController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         // شروع هفته از دوشنبه (یا شنبه بسته به نیاز شما: Carbon::SATURDAY)
         $startOfWeek = Carbon::now()->startOfWeek(Carbon::MONDAY);
@@ -18,6 +21,7 @@ class HabitController extends Controller
         // ساخت آرایه ۷ روز هفته جاری
         $weekDays = collect(range(0, 6))->map(function ($offset) use ($startOfWeek) {
             $date = $startOfWeek->copy()->addDays($offset);
+
             return [
                 'date' => $date->toDateString(),
                 'day_name' => $date->translatedFormat('D'), // نام کوتاه روز
@@ -34,7 +38,7 @@ class HabitController extends Controller
         return view('habits.index', compact('habits', 'weekDays'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'name' => 'required|string|max:100',
@@ -49,7 +53,7 @@ class HabitController extends Controller
     }
 
     // متد تیک زدن یا برداشتن تیک به صورت AJAX
-    public function toggleDay(Request $request, Habit $habit)
+    public function toggleDay(Request $request, Habit $habit): JsonResponse
     {
         $request->validate([
             'date' => 'required|date',
@@ -79,9 +83,10 @@ class HabitController extends Controller
         ]);
     }
 
-    public function destroy(Habit $habit)
+    public function destroy(Habit $habit): RedirectResponse
     {
         $habit->delete();
+
         return redirect()->route('habits.index');
     }
 }

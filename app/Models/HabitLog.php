@@ -12,6 +12,9 @@ class HabitLog extends Model
         'completed_date',
     ];
 
+    /**
+     * @return BelongsTo<Habit, $this>
+     */
     public function habit(): BelongsTo
     {
         return $this->belongsTo(Habit::class);

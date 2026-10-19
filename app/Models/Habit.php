@@ -15,6 +15,9 @@ class Habit extends Model
         'target_per_week',
     ];
 
+    /**
+     * @return HasMany<HabitLog, $this>
+     */
     public function logs(): HasMany
     {
         return $this->hasMany(HabitLog::class);
